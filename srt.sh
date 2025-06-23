@@ -12,43 +12,42 @@ cat << "EOF"
 EOF
 }
 
-# Usage instructions
+# Usage
 usage() {
-    echo "Usage: $0 [-d domain] [-dL domain_list.txt] [-o output_file] [-s]"
+    echo "Usage: srtsh [-d domain] [-dL domain_list.txt] [-o output_file] [-s]"
     exit 1
 }
 
-# Initialize variables
+# Vars
 domain=""
 domain_list=""
-output="srt_output.txt"
+output="srtsh_output.txt"
 silent=false
 
-# Parse args
+# Args
 while [[ "$#" -gt 0 ]]; do
     case $1 in
         -d) domain="$2"; shift ;;
         -dL) domain_list="$2"; shift ;;
         -o) output="$2"; shift ;;
         -s) silent=true ;;
-        *) echo "Unknown parameter passed: $1"; usage ;;
+        *) echo "Unknown parameter: $1"; usage ;;
     esac
     shift
 done
 
-# Show banner
+# Banner
 if [ "$silent" = false ]; then
     banner
 fi
 
-# Function to fetch, filter, display & save subdomains
+# Subdomain fetch function
 fetch_subdomains() {
     local dom="$1"
     local outfile="$2"
 
     [ "$silent" = false ] && echo "[*] Enumerating subdomains for: $dom"
 
-    # Grab and clean
     subs=$(curl -s "https://crt.sh/?q=%25.$dom&output=json" | \
         grep -oE '"name_value":"[^"]+"' | \
         sed -E 's/"name_value":"//' | \
@@ -58,22 +57,20 @@ fetch_subdomains() {
         grep -vE '[@A-Z]' | \
         sort -u)
 
-    # Print to terminal unless silent
     if [ "$silent" = false ]; then
         echo "[+] Clean Subdomains Found:"
         echo "$subs"
     fi
 
-    # Append to file
     echo "$subs" >> "$outfile"
 
     [ "$silent" = false ] && echo "[+] Done: $dom → $(echo "$subs" | wc -l) subdomains saved."
 }
 
-# Clear output
+# Start fresh
 > "$output"
 
-# Process domain(s)
+# Run
 if [ -n "$domain" ]; then
     fetch_subdomains "$domain" "$output"
 elif [ -n "$domain_list" ]; then
@@ -81,10 +78,8 @@ elif [ -n "$domain_list" ]; then
         fetch_subdomains "$dom" "$output"
     done < "$domain_list"
 else
-    echo "[-] No domain or domain list provided."
+    echo "[-] No domain or list provided."
     usage
 fi
 
-if [ "$silent" = false ]; then
-    echo "[+] All clean subdomains saved to: $output"
-fi
+[ "$silent" = false ] && echo "[+] Output saved to: $output"
