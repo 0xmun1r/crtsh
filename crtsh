@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Banner
+# Banner function
 banner() {
 cat << "EOF"
    ____ ____ _____ _________.__        
@@ -13,7 +13,7 @@ cat << "EOF"
 EOF
 }
 
-# Help
+# Help function
 usage() {
 cat << EOF
 Usage: crtsh [options]
@@ -25,7 +25,7 @@ Options:
   -s                  Silent mode (no banner or terminal output)
   -h                  Show this help message and exit
 
-Example:
+Examples:
   crtsh -d example.com
   crtsh -dL domains.txt -o results.txt
   crtsh -d nasa.gov -s -o nasa.txt
@@ -33,13 +33,13 @@ EOF
 exit 0
 }
 
-# Vars
+# Variables
 domain=""
 domain_list=""
 output="crtsh_output.txt"
 silent=false
 
-# Parse args
+# Parse command-line arguments
 while [[ "$#" -gt 0 ]]; do
     case $1 in
         -d) domain="$2"; shift ;;
@@ -52,17 +52,19 @@ while [[ "$#" -gt 0 ]]; do
     shift
 done
 
-# Show banner
+# Show banner if not silent
 if [ "$silent" = false ]; then
     banner
 fi
 
-# Function to fetch and clean subdomains
+# Function to fetch and clean subdomains for one domain
 fetch_subdomains() {
     local dom="$1"
     local outfile="$2"
 
-    [ "$silent" = false ] && echo "[*] Enumerating subdomains for: $dom"
+    if [ "$silent" = false ]; then
+        echo "[*] Enumerating subdomains for: $dom"
+    fi
 
     subs=$(curl -s "https://crt.sh/?q=%25.$dom&output=json" | \
         grep -oE '"name_value":"[^"]+"' | \
@@ -71,7 +73,8 @@ fetch_subdomains() {
         tr ',' '\n' | \
         sed "s/['\"]//g" | \
         sed 's/\r//g' | \
-        grep -vE '[@A-Z]' | \
+        tr '[:upper:]' '[:lower:]' | \
+        grep -v '@' | \
         sort -u)
 
     if [ "$silent" = false ]; then
@@ -79,12 +82,16 @@ fetch_subdomains() {
         echo "$subs"
     fi
 
+    # Write domain header and subdomains to output file
+    echo -e "\n# Subdomains for $dom" >> "$outfile"
     echo "$subs" >> "$outfile"
 
-    [ "$silent" = false ] && echo "[+] Done: $(echo "$subs" | wc -l) subdomains saved to $outfile"
+    if [ "$silent" = false ]; then
+        echo "[+] Done: $(echo "$subs" | wc -l) subdomains saved to $outfile"
+    fi
 }
 
-# Clear output file
+# Clear output file before starting
 > "$output"
 
 # Main logic
@@ -92,6 +99,8 @@ if [ -n "$domain" ]; then
     fetch_subdomains "$domain" "$output"
 elif [ -n "$domain_list" ]; then
     while IFS= read -r dom; do
+        # Skip empty lines or lines starting with #
+        [[ -z "$dom" || "$dom" =~ ^# ]] && continue
         fetch_subdomains "$dom" "$output"
     done < "$domain_list"
 else
@@ -99,4 +108,6 @@ else
     usage
 fi
 
-[ "$silent" = false ] && echo "[+] All subdomains saved to: $output"
+if [ "$silent" = false ]; then
+    echo "[+] All subdomains saved to: $output"
+fi
