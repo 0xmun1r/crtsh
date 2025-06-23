@@ -41,73 +41,61 @@ silent=false
 
 # Parse command-line arguments
 while [[ "$#" -gt 0 ]]; do
-    case $1 in
+    case "$1" in
         -d) domain="$2"; shift ;;
         -dL) domain_list="$2"; shift ;;
         -o) output="$2"; shift ;;
         -s) silent=true ;;
         -h) usage ;;
-        *) echo "Unknown parameter: $1"; usage ;;
+        *) echo "Unknown option: $1"; usage ;;
     esac
     shift
 done
 
-# Show banner if not silent
+# Show banner if not in silent mode
 if [ "$silent" = false ]; then
     banner
 fi
 
-# Function to fetch and clean subdomains for one domain
+# Function to fetch subdomains for a domain (no jq)
 fetch_subdomains() {
     local dom="$1"
     local outfile="$2"
 
-    if [ "$silent" = false ]; then
-        echo "[*] Enumerating subdomains for: $dom"
-    fi
+    [ "$silent" = false ] && echo "[*] Enumerating subdomains for: $dom"
 
     subs=$(curl -s "https://crt.sh/?q=%25.$dom&output=json" | \
-        grep -oE '"name_value":"[^"]+"' | \
-        sed -E 's/"name_value":"//' | \
-        sed 's/\\n/\n/g' | \
+        grep -oP '"name_value":"\K[^"]+' | \
+        sed 's/\*\.//g' | \
         tr ',' '\n' | \
-        sed "s/['\"]//g" | \
-        sed 's/\r//g' | \
         tr '[:upper:]' '[:lower:]' | \
         grep -v '@' | \
+        grep -E "^([a-z0-9.-]+\.)*$dom$" | \
         sort -u)
 
     if [ "$silent" = false ]; then
-        echo "[+] Clean Subdomains Found for $dom:"
+        echo "[+] Found $(echo "$subs" | grep -c .) subdomains for $dom"
         echo "$subs"
     fi
 
-    # Write domain header and subdomains to output file
     echo -e "\n# Subdomains for $dom" >> "$outfile"
     echo "$subs" >> "$outfile"
-
-    if [ "$silent" = false ]; then
-        echo "[+] Done: $(echo "$subs" | wc -l) subdomains saved to $outfile"
-    fi
 }
 
-# Clear output file before starting
+# Clear output file
 > "$output"
 
 # Main logic
-if [ -n "$domain" ]; then
+if [[ -n "$domain" ]]; then
     fetch_subdomains "$domain" "$output"
-elif [ -n "$domain_list" ]; then
+elif [[ -n "$domain_list" ]]; then
     while IFS= read -r dom; do
-        # Skip empty lines or lines starting with #
         [[ -z "$dom" || "$dom" =~ ^# ]] && continue
         fetch_subdomains "$dom" "$output"
     done < "$domain_list"
 else
-    echo "[-] No domain or list provided."
+    echo "[-] Error: No domain or domain list provided."
     usage
 fi
 
-if [ "$silent" = false ]; then
-    echo "[+] All subdomains saved to: $output"
-fi
+[ "$silent" = false ] && echo "[+] All results saved to: $output"
