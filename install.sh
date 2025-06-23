@@ -2,18 +2,25 @@
 
 echo "[*] Installing crtsh by 0×mun1r..."
 
-# Ensure ~/bin exists
+# Create ~/bin if not exists
 mkdir -p "$HOME/bin"
 
-# Copy tool into ~/bin and rename to crtsh
+# Copy crtsh script to ~/bin and make executable
 cp crtsh "$HOME/bin/crtsh"
 chmod +x "$HOME/bin/crtsh"
 
-# Add to PATH if not already
-if ! echo "$PATH" | grep -q "$HOME/bin"; then
-    echo 'export PATH="$HOME/bin:$PATH"' >> ~/.bashrc
-    source ~/.bashrc
+# Add ~/bin to PATH in ~/.bashrc if not already present
+if ! grep -q 'export PATH="$HOME/bin:$PATH"' "$HOME/.bashrc"; then
+    echo 'export PATH="$HOME/bin:$PATH"' >> "$HOME/.bashrc"
+    echo "[*] Added ~/bin to PATH in ~/.bashrc"
+else
+    echo "[*] ~/bin already in PATH in ~/.bashrc"
 fi
 
-echo "[+] Installation complete. Use it by running:"
+echo "[+] Installation complete."
+
+echo "[!] Please restart your terminal or run 'source ~/.bashrc' to update your PATH."
+
+echo "Usage examples:"
 echo "    crtsh -d example.com"
+echo "    crtsh -dL domains.txt -o output.txt"
