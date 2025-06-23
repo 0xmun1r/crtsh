@@ -16,8 +16,8 @@
 
 ## 📦 Installation (Kali Linux / Debian)
 ```bash
-git clone https://github.com/0xmun1r/crt.sh.git
-cd crt.sh
+git clone https://github.com/0xmun1r/crtsh.git
+cd crtsh
 chmod +x crtsh install.sh
 ./install.sh 
 
