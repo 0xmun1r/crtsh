@@ -1,6 +1,6 @@
-# 🔍 srt.sh — Subdomain Recon Tool (crt.sh) by 0×mun1r
+# 🔍 crtsh — Subdomain Recon Tool (crt.sh) by 0×mun1r
 
-A fast, lightweight subdomain enumerator using crt.sh, built in pure Bash (no `jq` dependency). Filters out lines with `@` and uppercase letters automatically.
+A fast, lightweight subdomain enumerator using crt.sh, built in pure Bash.
 
 ## 🛠 Features
 - ✅ No dependencies except `curl`, `grep`, `sed`
@@ -9,17 +9,19 @@ A fast, lightweight subdomain enumerator using crt.sh, built in pure Bash (no `j
 
 ## 📦 Installation (Kali Linux / Debian)
 ```bash
-git clone https://github.com/YOUR_USERNAME/srt.sh.git && cd srt.sh && ./install.sh
+git clone https://github.com/0xmun1r/crt.sh.git
+cd crt.sh
+chmod +x crtsh install.sh
+./install.sh 
+
 ```
-Then just run:
-```bash
-srt.sh -d example.com
-```
+
 📌 Usage
 ```bash
-srt.sh -d example.com               # Single domain
-srt.sh -dL domains.txt              # List of domains
-srt.sh -d nasa.gov -o nasa.txt      # Custom output
+crtsh -h.                          # help
+crtsh -d example.com               # Single domain
+crtsh -dL domains.txt              # List of domains
+crtsh -d example.com -o output.txt      # Custom output
 srt.sh -d example.com -s            # Silent mode
 ```
 👤 Author
