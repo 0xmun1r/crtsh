@@ -14,11 +14,11 @@ A fast, lightweight subdomain enumerator using crt.sh, built in pure Bash (no `j
 git clone https://github.com/YOUR_USERNAME/srt.sh.git && cd srt.sh && ./install.sh
 
 Then just run:
-
+```bash
 srt.sh -d example.com
 
 📌 Usage
-
+```bash
 srt.sh -d example.com               # Single domain
 srt.sh -dL domains.txt              # List of domains
 srt.sh -d nasa.gov -o nasa.txt      # Custom output
