@@ -1,0 +1,102 @@
+#!/bin/bash
+
+# Banner
+banner() {
+cat << "EOF"
+   ____ ____ _____ _________.__        
+  / ___\\   _  \\\__  \\\__  |  |__  ___.__.
+ / /_/  >  /_/  >  /_\  \ /   |  |  <   |  |
+ \___  /|  \_/   (____  /    ^   /\___  |
+/_____/  \_____  /_____/ \____   |/ ____|
+              \/             |__|\/     
+   Subdomain Recon Tool by 0×mun1r (crt.sh based)
+EOF
+}
+
+# Help
+usage() {
+cat << EOF
+Usage: crtsh [options]
+
+Options:
+  -d <domain>         Enumerate subdomains for a single domain
+  -dL <file>          Enumerate subdomains for a list of domains (one per line)
+  -o <output.txt>     Save output to specified file (default: crtsh_output.txt)
+  -s                  Silent mode (no banner or terminal output)
+  -h                  Show this help message and exit
+
+Example:
+  crtsh -d example.com
+  crtsh -dL domains.txt -o results.txt
+  crtsh -d nasa.gov -s -o nasa.txt
+EOF
+exit 0
+}
+
+# Vars
+domain=""
+domain_list=""
+output="crtsh_output.txt"
+silent=false
+
+# Parse args
+while [[ "$#" -gt 0 ]]; do
+    case $1 in
+        -d) domain="$2"; shift ;;
+        -dL) domain_list="$2"; shift ;;
+        -o) output="$2"; shift ;;
+        -s) silent=true ;;
+        -h) usage ;;
+        *) echo "Unknown parameter: $1"; usage ;;
+    esac
+    shift
+done
+
+# Show banner
+if [ "$silent" = false ]; then
+    banner
+fi
+
+# Function to fetch and clean subdomains
+fetch_subdomains() {
+    local dom="$1"
+    local outfile="$2"
+
+    [ "$silent" = false ] && echo "[*] Enumerating subdomains for: $dom"
+
+    subs=$(curl -s "https://crt.sh/?q=%25.$dom&output=json" | \
+        grep -oE '"name_value":"[^"]+"' | \
+        sed -E 's/"name_value":"//' | \
+        sed 's/\\n/\n/g' | \
+        tr ',' '\n' | \
+        sed "s/['\"]//g" | \
+        sed 's/\r//g' | \
+        grep -vE '[@A-Z]' | \
+        sort -u)
+
+    if [ "$silent" = false ]; then
+        echo "[+] Clean Subdomains Found for $dom:"
+        echo "$subs"
+    fi
+
+    echo "$subs" >> "$outfile"
+
+    [ "$silent" = false ] && echo "[+] Done: $(echo "$subs" | wc -l) subdomains saved to $outfile"
+}
+
+# Clear output file
+> "$output"
+
+# Main logic
+if [ -n "$domain" ]; then
+    fetch_subdomains "$domain" "$output"
+elif [ -n "$domain_list" ]; then
+    while IFS= read -r dom; do
+        fetch_subdomains "$dom" "$output"
+    done < "$domain_list"
+else
+    echo "[-] No domain or list provided."
+    usage
+fi
+
+[ "$silent" = false ] && echo "[+] All subdomains saved to: $output"
