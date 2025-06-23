@@ -19,38 +19,17 @@
 git clone https://github.com/0xmun1r/crtsh.git
 cd crtsh
 chmod +x crtsh install.sh
-./install.sh 
-
+./install.sh
 ```
 
 📌 Usage
-```bash
-crtsh -h.                          # help
-crtsh -d example.com               # Single domain
-crtsh -dL domains.txt              # List of domains
-crtsh -d example.com -o output.txt      # Custom output
-srt.sh -d example.com -s            # Silent mode
+```dif
+crtsh -h                        # Show help
+crtsh -d example.com            # Enumerate subdomains for a single domain
+crtsh -dL domains.txt           # Enumerate subdomains from a list of domains
+crtsh -d example.com -o out.txt # Save output to a file
+crtsh -d example.com -s         # Silent mode (no banner/output)
 ```
 
 
-<h2 align="center">👨‍💻 Author</h2>
-
-<p align="center">
-  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=22&pause=1200&color=F700FF&center=true&vCenter=true&width=700&height=90&lines=Crafted+by+0%C3%97mun1r;Ethical+Hacker+%7C+Bug+Bounty+Hunter;Cybersecurity+%7C+Bash+Automation" alt="Typing SVG" />
-</p>
-
-<pre align="center">
-░█▀▄░█▀▀░█▀█░█░█░█▀▀░█▀▄
-░█░█░█▀▀░█░█░▀▄▀░█▀▀░█▀▄
-░▀▀░░▀▀▀░▀▀▀░░▀░░▀▀▀░▀░▀
-</pre>
-
-<p align="center">
-  <a href="https://github.com/0xmun1r">
-    <img src="https://img.shields.io/badge/GitHub-0×mun1r-black?style=for-the-badge&logo=github" />
-  </a>
-</p>
-
-<p align="center">
-  ⚔️ Automating Recon. Breaking Web. Staying Ethical.
-</p>
+<h2 align="center">👨‍💻 Author</h2> <p align="center"> <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=22&pause=1200&color=F700FF&center=true&vCenter=true&width=700&height=90&lines=Crafted+by+0%C3%97mun1r;Ethical+Hacker+%7C+Bug+Bounty+Hunter;Cybersecurity+%7C+Bash+Automation" alt="Typing SVG" /> </p> <pre align="center"> ░█▀▄░█▀▀░█▀█░█░█░█▀▀░█▀▄ ░█░█░█▀▀░█░█░▀▄▀░█▀▀░█▀▄ ░▀▀░░▀▀▀░▀▀▀░░▀░░▀▀▀░▀░▀ </pre> <p align="center"> <a href="https://github.com/0xmun1r"> <img src="https://img.shields.io/badge/GitHub-0×mun1r-black?style=for-the-badge&logo=github" /> </a> </p> <p align="center"> ⚔️ Automating Recon. Breaking Web. Staying Ethical. </p>
