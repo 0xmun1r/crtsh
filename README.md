@@ -32,4 +32,14 @@ crtsh -d example.com -s         # Silent mode (no banner/output)
 ```
 
 
-<h2 align="center">👨‍💻 Author</h2> <p align="center"> <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=22&pause=1200&color=F700FF&center=true&vCenter=true&width=700&height=90&lines=Crafted+by+0%C3%97mun1r;Ethical+Hacker+%7C+Bug+Bounty+Hunter;Cybersecurity+%7C+Bash+Automation" alt="Typing SVG" /> </p> <pre align="center"> ░█▀▄░█▀▀░█▀█░█░█░█▀▀░█▀▄ ░█░█░█▀▀░█░█░▀▄▀░█▀▀░█▀▄ ░▀▀░░▀▀▀░▀▀▀░░▀░░▀▀▀░▀░▀ </pre> <p align="center"> <a href="https://github.com/0xmun1r"> <img src="https://img.shields.io/badge/GitHub-0×mun1r-black?style=for-the-badge&logo=github" /> </a> </p> <p align="center"> ⚔️ Automating Recon. Breaking Web. Staying Ethical. </p>
+<h2 align="center">👨‍💻 Author</h2> <p align="center"> <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=22&pause=1200&color=F700FF&center=true&vCenter=true&width=700&height=90&lines=Crafted+by+0%C3%97mun1r;Ethical+Hacker+%7C+Bug+Bounty+Hunter;Cybersecurity+%7C+Bash+Automation" alt="Typing SVG" /> </p> <pre align="center"> ░█▀▄░█▀▀░█▀█░█░█░█▀▀░█▀▄ ░█░█░█▀▀░█░█░▀▄▀░█▀▀░█▀▄ ░▀▀░░▀▀▀░▀▀▀░░▀░░▀▀▀░▀░▀ </pre> 
+
+## 🌐 Connect with me
+
+[![GitHub](https://img.shields.io/badge/GitHub-0×mun1r-181717?style=for-the-badge&logo=github)](https://github.com/0xmun1r)
+[![Facebook](https://img.shields.io/badge/Facebook-Page-blue?style=for-the-badge&logo=facebook)](https://facebook.com/0xmun1r)
+[![Telegram](https://img.shields.io/badge/Telegram-Channel-2CA5E0?style=for-the-badge&logo=telegram)](https://t.me/telegr_mun1r)
+[![YouTube](https://img.shields.io/badge/YouTube-Channel-FF0000?style=for-the-badge&logo=youtube)](https://youtube.com/@0xmun1r?si=BQwwz7HA2YfqKvaF)
+
+
+<p align="center"> ⚔️ Automating Recon. Breaking Web. Staying Ethical. </p>
